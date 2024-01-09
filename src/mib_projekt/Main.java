@@ -7,6 +7,7 @@ package mib_projekt;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import oru.inf.InfDB;
 import oru.inf.InfException;
 
@@ -19,20 +20,21 @@ public class Main {
     private static InfDB idb;
 
     public static void main(String[] args) {
-        new Main().startApplication();
-    }
-
-    private void startApplication() {
-         try {
+          try {
             idb = new InfDB("mibdb", "3306", "mibdba", "mibkey");
-            java.awt.EventQueue.invokeLater(() -> {
-                new HuvudMeny(idb).setVisible(true);
-                JOptionPane.showMessageDialog(null, "Anslutning Lyckades");
+            
+            // Skapa och visa JFrame-fönstret
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    HuvudMeny firstWindow = new HuvudMeny(); // Skapa en instans av din JFrame-klass
+                    firstWindow.setVisible(true); // Gör fönstret synligt
+                }
             });
         } catch (InfException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Kunde inte ansluta till databasen. Kontrollera dina uppgifter och försök igen.");
         }
     }
-}
+    }
+
+
     
